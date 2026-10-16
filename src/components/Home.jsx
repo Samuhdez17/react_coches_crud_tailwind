@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
 import CocheService from '../services/CocheService';
+import { NavLink } from 'react-router-dom';
+import EliminarCoche from './EliminarCoche';
 
 export default class Home extends Component {
     service = new CocheService()
 
     state = {
         coches: [],
+        eliminar: false,
+    }
+
+    comunicacionEliminar = (statusEliminar) => {
+        this.setState({
+            eliminar: statusEliminar
+        })
     }
 
     cargarCoches = async () => {
@@ -20,18 +29,49 @@ export default class Home extends Component {
     }
 
     render() {
-        return (
-            <div>
-                <h1>Lista de coches</h1>
+        if (this.state.eliminar)
+            return(
+                <EliminarCoche metodoPadre={this.comunicacionEliminar}/>
+            )
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th></th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        );
+        else 
+            return (
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>MARCA</th>
+                                <th>MODELO</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {this.state.coches.map((c) => {
+                                return (
+                                    <tr key={c.idCoche}>
+                                        <td>{c.marca}</td>
+                                        <td>{c.modelo}</td>
+                                        <td>
+                                            <NavLink to={`/coche/${c.idCoche}`}
+                                            >
+                                                Ver detalles
+                                            </NavLink>
+
+                                            <button onClick={ () => {
+                                                this.setState({
+                                                    eliminar: true
+                                                })
+                                            }}
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            )
     }
 }

@@ -7,8 +7,8 @@ import Coche from './Coche';
 export default class Router extends Component {
     render() {
         function CocheElement() {
-            const { id } = useParams();
-            return <Coche id={id} />;
+            const { idCoche } = useParams();
+            return <Coche idCoche={idCoche} />;
         }
         
         return (
@@ -16,7 +16,7 @@ export default class Router extends Component {
                 <Menu />
                 <Routes>
                     <Route path="/" element={<Home/>} />
-                    <Route path="/coche/:id" element={<CocheElement/>} />
+                    <Route path="coche/:idCoche" element={<CocheElement/>} />
                 </Routes>
             </BrowserRouter>
         );
