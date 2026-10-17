@@ -9,6 +9,7 @@ export default class Home extends Component {
     state = {
         coches: [],
         eliminar: false,
+        actualizar: true,
     }
 
     comunicacionEliminar = (statusEliminar) => {
@@ -25,7 +26,12 @@ export default class Home extends Component {
     }
 
     componentDidMount = async () => {
-        await this.cargarCoches()
+        this.state.actualizar ?
+            await this.cargarCoches()
+            :
+            this.setState({
+                actualizar: true
+            })
     }
 
     render() {
