@@ -20,15 +20,14 @@ export default class Home extends Component {
 
     comunicacionEliminarEditar = async (statusEliminar, actualizar) => {
         this.setState({
-            eliminarEditar: statusEliminar,
+            eliminar: statusEliminar,
+            editar: statusEliminar,
+            cocheSeleccionado: '',
+            coche: null,
+            redireccionar: null
         })
 
-        if (actualizar) 
-            await this.cargarCoches()
-        else 
-            this.setState({
-                redireccionar: '/false'
-            })
+        if (actualizar) await this.cargarCoches()
     }
     
     comunicacionCoche = (editar, eliminar, coche) => {

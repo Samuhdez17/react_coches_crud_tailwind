@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import CocheService from '../services/CocheService';
 
 export default class EditarCoche extends Component {
+    service = new CocheService()
+
     marcaRef = React.createRef()
     modeloRef = React.createRef()
     conductorRef = React.createRef()
