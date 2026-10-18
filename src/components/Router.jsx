@@ -8,7 +8,7 @@ export default class Router extends Component {
     render() {
         function HomeElement() {
             const { actualizar } = useParams();
-            return <Home actualizar={actualizar} />
+            return <Home key={actualizar || 'home'} actualizar={actualizar} />
         }
         return (
             <BrowserRouter>

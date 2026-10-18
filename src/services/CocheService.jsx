@@ -28,7 +28,7 @@ export default class CocheService {
 
     async updateCoche(coche) {
         const url = Global.apiCoches
-        const request = 'api/coches/updatecoche'
+        const request = 'api/coches/updatecoche/'
 
         const response = await axios.put(url + request, coche)
         return response.data
