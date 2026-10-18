@@ -3,6 +3,8 @@ import CocheService from '../services/CocheService';
 import EliminarCoche from './EliminarCoche';
 import Coche from './Coche';
 import EditarCoche from './EditarCoche';
+import Global from '../Global';
+import { Navigate } from 'react-router-dom';
 
 export default class Home extends Component {
     service = new CocheService()
@@ -13,24 +15,20 @@ export default class Home extends Component {
         eliminar: false,
         editar: false,
         actualizar: true,
+        redireccionar: null
     }
 
-    comunicacionEliminar = (statusEliminar, actualizar) => {
+    comunicacionEliminarEditar = async (statusEliminar, actualizar) => {
         this.setState({
-            eliminar: statusEliminar,
+            eliminarEditar: statusEliminar,
         })
 
         if (actualizar) 
-            this.cargarCoches()
-    }
-
-    comunicacionEditar = (statusEditar, actualizar) => {
-        this.setState({
-            editar: statusEditar,
-        })
-
-        if (actualizar) 
-            this.cargarCoches()
+            await this.cargarCoches()
+        else 
+            this.setState({
+                redireccionar: '/false'
+            })
     }
     
     comunicacionCoche = (editar, eliminar, coche) => {
@@ -48,30 +46,36 @@ export default class Home extends Component {
         this.setState({
             coches: coches
         })
+
+        Global.coches = coches
     }
 
     componentDidMount = async () => {
-        if (this.state.actualizar) {
+        if (this.props.actualizar === 'true') {
             await this.cargarCoches()
-            this.setState({
-                actualizar: false
-            })
 
-        } else 
+        } else {
+            console.log('cargando coches desde global');
             this.setState({
-                actualizar: true
+                coches: Global.coches
             })
+        }
     }
 
     render() {
+        if (this.state.redireccionar)
+            return <Navigate to={this.state.redireccionar} replace/>
+
         if (this.state.eliminar)
             return(
-                <EliminarCoche metodoPadre={this.comunicacionEliminar}/>
+                <EliminarCoche metodoPadre={this.comunicacionEliminarEditar} 
+                id = {this.state.coche.idCoche}
+                />
             )
 
         else if (this.state.editar)
             return(
-                <EditarCoche metodoPadre={this.comunicacionEditar}
+                <EditarCoche metodoPadre={this.comunicacionEliminarEditar}
                 coche = {this.state.coche}
                 />
             )
@@ -83,7 +87,8 @@ export default class Home extends Component {
                         this.state.coches.map((c,i) => {
                             return (
                                 <li key={i}>
-                                    <Coche coche = {c} metodoPadre = {this.comunicacionCoche} 
+                                    <Coche metodoPadre = {this.comunicacionCoche} 
+                                    coche = {c}
                                     />
                                 </li>
                             )
