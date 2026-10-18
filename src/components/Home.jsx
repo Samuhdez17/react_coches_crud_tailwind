@@ -1,24 +1,49 @@
 import React, { Component } from 'react';
 import CocheService from '../services/CocheService';
-import { NavLink } from 'react-router-dom';
 import EliminarCoche from './EliminarCoche';
+import Coche from './Coche';
+import EditarCoche from './EditarCoche';
 
 export default class Home extends Component {
     service = new CocheService()
 
     state = {
         coches: [],
+        cocheSeleccionado: '',
         eliminar: false,
+        editar: false,
         actualizar: true,
     }
 
-    comunicacionEliminar = (statusEliminar) => {
+    comunicacionEliminar = (statusEliminar, actualizar) => {
         this.setState({
-            eliminar: statusEliminar
+            eliminar: statusEliminar,
+        })
+
+        if (actualizar) 
+            this.cargarCoches()
+    }
+
+    comunicacionEditar = (statusEditar, actualizar) => {
+        this.setState({
+            editar: statusEditar,
+        })
+
+        if (actualizar) 
+            this.cargarCoches()
+    }
+    
+    comunicacionCoche = (editar, eliminar, coche) => {
+        this.setState({
+            editar: editar,
+            eliminar: eliminar,
+            coche: coche
         })
     }
 
     cargarCoches = async () => {
+        console.log('haciendo peticion');
+        
         const coches = await this.service.getCoches()
         this.setState({
             coches: coches
@@ -26,9 +51,13 @@ export default class Home extends Component {
     }
 
     componentDidMount = async () => {
-        this.state.actualizar ?
+        if (this.state.actualizar) {
             await this.cargarCoches()
-            :
+            this.setState({
+                actualizar: false
+            })
+
+        } else 
             this.setState({
                 actualizar: true
             })
@@ -40,44 +69,27 @@ export default class Home extends Component {
                 <EliminarCoche metodoPadre={this.comunicacionEliminar}/>
             )
 
+        else if (this.state.editar)
+            return(
+                <EditarCoche metodoPadre={this.comunicacionEditar}
+                coche = {this.state.coche}
+                />
+            )
+
         else 
             return (
-                <div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>MARCA</th>
-                                <th>MODELO</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {this.state.coches.map((c) => {
-                                return (
-                                    <tr key={c.idCoche}>
-                                        <td>{c.marca}</td>
-                                        <td>{c.modelo}</td>
-                                        <td>
-                                            <NavLink to={`/coche/${c.idCoche}`}
-                                            >
-                                                Ver detalles
-                                            </NavLink>
-
-                                            <button onClick={ () => {
-                                                this.setState({
-                                                    eliminar: true
-                                                })
-                                            }}
-                                            >
-                                                Eliminar
-                                            </button>
-                                        </td>
-                                    </tr>
-                                )
-                            })}
-                        </tbody>
-                    </table>
-                </div>
+                <ul>
+                    {
+                        this.state.coches.map((c,i) => {
+                            return (
+                                <li key={i}>
+                                    <Coche coche = {c} metodoPadre = {this.comunicacionCoche} 
+                                    />
+                                </li>
+                            )
+                        })
+                    }
+                </ul>
             )
     }
 }
