@@ -36,7 +36,7 @@ export default class EditarCoche extends Component {
                             }
     
                             await this.service.updateCoche(coche)
-                            this.props.metodoPadre(false, true)
+                            this.props.metodoPadre(false, true, 'editar')
 
                         } catch (error) {
                             throw error
@@ -46,7 +46,7 @@ export default class EditarCoche extends Component {
                     </button>
 
                     <button onClick={() => {
-                        this.props.metodoPadre(false, false)
+                        this.props.metodoPadre(false, false, 'editar')
                     }}>
                         Volver
                     </button>

@@ -12,15 +12,11 @@ export default class CrearCoche extends Component {
 
     state = {
         status: false,
-        actualizar: false,
     }
 
     render() {
         if (this.state.status)
-            if (this.state.actualizar)
-                return <Navigate to='/true' />
-            else
-                return <Navigate to='/false' />
+            return <Navigate to='/' />
 
         else
             return (
@@ -48,8 +44,7 @@ export default class CrearCoche extends Component {
 
                         await this.service.createCoche(coche)
                         this.setState({
-                            status: true,
-                            actualizar: true
+                            status: true
                         })
                     }} >
                         Crear coche

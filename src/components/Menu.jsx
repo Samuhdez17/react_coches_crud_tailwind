@@ -16,7 +16,7 @@ export default class Menu extends Component {
                         <div className="hidden md:flex space-x-8">
                             <NavLink 
                             className="text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 border-blue-600 text-sm font-medium"
-                            to="/true">
+                            to="/">
                                 Home
                             </NavLink>
 

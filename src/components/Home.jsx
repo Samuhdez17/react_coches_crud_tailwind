@@ -15,22 +15,26 @@ export default class Home extends Component {
         eliminar: false,
         editar: false,
         actualizar: true,
-        redireccionar: null
     }
 
-    comunicacionEliminarEditar = async (statusEliminar, actualizar) => {
+    comunicacionEliminarEditar = async (status, actualizar, accion) => {
+        if (accion === 'editar')
+            this.setState({
+                editar: status,
+            })
+        else if (accion === 'eliminar')
         this.setState({
-            eliminarEditar: statusEliminar,
+            eliminar: status,
         })
 
-        if (actualizar) {
+        if (actualizar)
             await this.cargarCoches()
-
-        } else 
+        else {
+            console.log('cargando coches desde global');
             this.setState({
-                redireccionar: '/false'
+                coches: Global.coches
             })
-
+        }
     }
     
     comunicacionCoche = (editar, eliminar, coche) => {
@@ -53,21 +57,11 @@ export default class Home extends Component {
     }
 
     componentDidMount = async () => {
-        if (this.props.actualizar === 'true') {
+        if (this.state.actualizar)
             await this.cargarCoches()
-
-        } else {
-            console.log('cargando coches desde global');
-            this.setState({
-                coches: Global.coches
-            })
-        }
     }
 
     render() {
-        if (this.state.redireccionar)
-            return <Navigate to={this.state.redireccionar}/>
-
         if (this.state.eliminar)
             return(
                 <EliminarCoche metodoPadre={this.comunicacionEliminarEditar} 
