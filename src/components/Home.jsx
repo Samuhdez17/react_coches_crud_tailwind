@@ -4,7 +4,6 @@ import EliminarCoche from './EliminarCoche';
 import Coche from './Coche';
 import EditarCoche from './EditarCoche';
 import Global from '../Global';
-import { Navigate } from 'react-router-dom';
 
 export default class Home extends Component {
     service = new CocheService()

@@ -29,6 +29,7 @@ export default class EditarCoche extends Component {
                     <button onClick={async () => {
                         try {
                             const coche = {
+                                idCoche:    this.props.coche.idCoche,
                                 marca:      this.marcaRef.current.value,
                                 modelo:     this.modeloRef.current.value,
                                 conductor:  this.conductorRef.current.value,
@@ -36,7 +37,7 @@ export default class EditarCoche extends Component {
                             }
     
                             await this.service.updateCoche(coche)
-                            this.props.metodoPadre(false, true, 'editar')
+                            await this.props.metodoPadre(false, true, 'editar')
 
                         } catch (error) {
                             throw error
@@ -45,8 +46,8 @@ export default class EditarCoche extends Component {
                         Aplicar cambios
                     </button>
 
-                    <button onClick={() => {
-                        this.props.metodoPadre(false, false, 'editar')
+                    <button onClick={async () => {
+                        await this.props.metodoPadre(false, false, 'editar')
                     }}>
                         Volver
                     </button>

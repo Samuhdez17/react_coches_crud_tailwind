@@ -11,12 +11,12 @@ export default class EliminarCoche extends Component {
 
                 <button onClick={ async () => {
                     await this.service.deleteCoche(this.props.id)
-                    this.props.metodoPadre(false, true, 'eliminar')
+                    await this.props.metodoPadre(false, true, 'eliminar')
                 }}>
                     Confirmar
                 </button>
 
-                <button onClick={ () => {
+                <button onClick={ async () => {
                     this.props.metodoPadre(false, false, 'eliminar')
                 }}>
                     Cancelar
