@@ -27,15 +27,20 @@ export default class EditarCoche extends Component {
 
                 <div>
                     <button onClick={async () => {
-                        const coche = {
-                            marca:      this.marcaRef.current.value,
-                            modelo:     this.modeloRef.current.value,
-                            conductor:  this.conductorRef.current.value,
-                            imagen:     this.imagenRef.current.value
-                        }
+                        try {
+                            const coche = {
+                                marca:      this.marcaRef.current.value,
+                                modelo:     this.modeloRef.current.value,
+                                conductor:  this.conductorRef.current.value,
+                                imagen:     this.imagenRef.current.value
+                            }
+    
+                            await this.service.updateCoche(coche)
+                            this.props.metodoPadre(false, true)
 
-                        await this.service.updateCoche(coche)
-                        this.props.metodoPadre(false, true)
+                        } catch (error) {
+                            throw error
+                        }
                     }} >
                         Aplicar cambios
                     </button>
